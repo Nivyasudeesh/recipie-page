@@ -72,3 +72,45 @@ window.addEventListener("load", function () {
             resultsDiv.innerHTML = "<p>Error loading recipes!</p>";
         });
 });
+
+// ✅ CATEGORY FILTER FEATURE
+const categoryFilter = document.getElementById("categoryFilter");
+
+categoryFilter.addEventListener("change", function () {
+    const category = this.value;
+
+    if (category === "") {
+        // Load all recipes again
+        window.dispatchEvent(new Event("load"));
+        return;
+    }
+
+    resultsDiv.innerHTML = "<p>Loading " + category + " recipes...</p>";
+
+    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=" + category)
+        .then(res => res.json())
+        .then(data => {
+
+            if (!data.meals) {
+                resultsDiv.innerHTML = "<p>No recipes found.</p>";
+                return;
+            }
+
+            resultsDiv.innerHTML = "";
+
+            data.meals.forEach(meal => {
+                let div = document.createElement("div");
+                div.classList.add("recipe-card");
+
+                div.innerHTML = `
+                    <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                    <h3>${meal.strMeal}</h3>
+                `;
+
+                resultsDiv.appendChild(div);
+            });
+        })
+        .catch(() => {
+            resultsDiv.innerHTML = "<p>Error loading recipes!</p>";
+        });
+});
