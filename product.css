@@ -64,7 +64,7 @@ body {
 
 .recipe-detail img.recipe-img {
     width: 100%;
-    max-width: 500px;
+    max-width: 250px;
     display: block;
     margin: 20px auto;
     border-radius: 12px;
